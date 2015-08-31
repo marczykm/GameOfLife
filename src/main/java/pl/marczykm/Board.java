@@ -11,6 +11,11 @@ public class Board {
     private int height;
     private Set<Cell> cells;
 
+    public Board(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
     public Board(int numberOfCells, int width, int height) {
         this.numberOfCells = numberOfCells;
         this.width = width;
@@ -32,7 +37,7 @@ public class Board {
 
         Random randomGenerator = new Random();
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 if (randomGenerator.nextInt(100) >= 90)
                     cells.add(new Cell(x, y, false));
                 else
@@ -41,22 +46,23 @@ public class Board {
         }
     }
 
-    private boolean shouldLive(Cell cell){
-        return false;
+    public void redrawBoard() {
+        Set<Cell> copy = new HashSet<Cell>();
+        for (Cell cell : cells) {
+            cell.setDead(!shouldLive(cell));
+            copy.add(cell);
+        }
+        cells = copy;
     }
 
-    private boolean shouldBecomeAlive(Cell cell) {
-        if (countNeighboars(cell) == 3)
+    private boolean shouldLive(Cell cell) {
+        if (cell.isDead() && countNeighboars(cell) == 3) {
             return true;
+        } else if (!cell.isDead() && (countNeighboars(cell) != 2 && countNeighboars(cell) != 3)) {
+            return false;
+        }
         return false;
     }
-
-    private boolean shouldStayAlive(Cell cell) {
-        if (countNeighboars(cell) == 2 || countNeighboars(cell)==3)
-            return true;
-        return false;
-    }
-
 
     private int countNeighboars(Cell cell) {
         int numberOfNeighboars = 0;

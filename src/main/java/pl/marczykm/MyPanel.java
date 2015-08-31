@@ -22,6 +22,12 @@ public class MyPanel extends JPanel {
         super.paintComponent(g);
         g2d = (Graphics2D) g;
         redrawCells();
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        board.redrawBoard();
     }
 
     private void redrawCells(){
